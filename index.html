@@ -5,6 +5,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Google tag (gtag.js) - GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8ZSYKG4DN0"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-8ZSYKG4DN0');
+  </script>
+
   <!-- Default Page Title & Meta (overridden per-page by React 19 <SEO /> component) -->
   <title>Zyvokio — Studio-Grade Image & PDF Converter | Free Online Tools</title>
   <meta name="description"
@@ -59,28 +69,23 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Zyvokio",
-      "url": "https://YOUR-DOMAIN.com",
+      "url": "https://zyvokio.vercel.app",
       "logo": "https://zyvokio.vercel.app/01_transparent_logo.png",
       "description": "Studio-grade image and PDF conversion platform. Free, private, and powered by Sharp.",
       "sameAs": []
     }
-    </script>
+  </script>
 
-  <!-- JSON-LD Structured Data: WebSite with SearchAction -->
+  <!-- JSON-LD Structured Data: WebSite -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Zyvokio",
-      "url": "https://YOUR-DOMAIN.com",
-      "description": "Free studio-grade image and PDF converter. Convert JPG, PNG, WebP, SVG and use 29 PDF tools online.",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://zyvokio.vercel.app/?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "url": "https://zyvokio.vercel.app",
+      "description": "Free studio-grade image and PDF converter. Convert JPG, PNG, WebP, SVG and use 29 PDF tools online."
     }
-    </script>
+  </script>
 
   <!-- Preconnect to Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
