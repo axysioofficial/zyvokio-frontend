@@ -1,5 +1,5 @@
 # Zyvokio — robots.txt
-# https://YOUR-DOMAIN.com/robots.txt
+# https://zyvokio.vercel.app/robots.txt
 
 User-agent: *
 Allow: /
@@ -10,5 +10,5 @@ Disallow: /admin/
 Disallow: /private/
 
 # Sitemap location
-Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
+Sitemap: https://zyvokio.vercel.app/sitemap.xml
 
