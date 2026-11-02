@@ -107,14 +107,14 @@ export default function PdfToolsGrid({ onSelectTool }) {
   }, [activeCategory, searchQuery]);
 
   return (
-    <div className="pdf-tools-suite-container fade-in">
+    <div className="pdf-tools-suite-container fade-in" aria-labelledby="pdf-tools-heading">
       {/* Hero section */}
       <div className="pdf-tools-hero">
         <div className="pdf-hero-badge">
           <Sparkles size={14} className="text-amber" />
           <span>Every Tool You Need in One Place</span>
         </div>
-        <h1 className="pdf-hero-title">
+        <h1 className="pdf-hero-title" id="pdf-tools-heading">
           Every tool you need to work with <span className="gradient-pdf-text">PDFs in one place</span>
         </h1>
         <p className="pdf-hero-subtitle">

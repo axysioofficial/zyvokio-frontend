@@ -49,8 +49,11 @@ export default function FileCard({
       <div className="file-card-preview-wrap transparency-grid-bg">
         <img 
           src={item.status === 'completed' && item.convertedUrl ? item.convertedUrl : item.previewUrl} 
-          alt={item.name} 
+          alt={`Preview of ${item.name} — ${item.status === 'completed' ? 'converted to ' + toFmt : 'original ' + fromFmt}`} 
           className="file-card-img" 
+          loading="lazy"
+          width="200"
+          height="150"
         />
         <div className="format-tag original">{fromFmt}</div>
         {item.status === 'completed' && (

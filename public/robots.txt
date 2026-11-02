@@ -1,0 +1,14 @@
+# Zyvokio — robots.txt
+# https://YOUR-DOMAIN.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Disallow internal API and private endpoints
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+
+# Sitemap location
+Sitemap: https://YOUR-DOMAIN.com/sitemap.xml
+

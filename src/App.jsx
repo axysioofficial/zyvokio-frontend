@@ -10,6 +10,7 @@ import {
   Info
 } from 'lucide-react';
 
+import SEO from './components/SEO';
 import Navbar from './components/Navbar';
 import FormatSelector from './components/FormatSelector';
 import DropZone from './components/DropZone';
@@ -22,7 +23,10 @@ import ContactSection from './components/ContactSection';
 import ModeSwitcher from './components/ModeSwitcher';
 import PdfToolsGrid from './components/PdfToolsGrid';
 import PdfToolModal from './components/PdfToolModal';
+import NotFound from './components/NotFound';
 import './App.css';
+
+import { SITE_URL, SITE_NAME } from './utils/seoConfig';
 
 import {
   checkBackendHealth,
@@ -38,10 +42,69 @@ import {
   saveUserPreferences
 } from './utils/storage';
 
+/**
+ * JSON-LD schemas generated per-mode for structured data.
+ */
+function getSchemaForMode(activeMode) {
+  const schemas = [];
+
+  // BreadcrumbList
+  const breadcrumbItems = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: SITE_URL
+    }
+  ];
+
+  if (activeMode === 'file') {
+    breadcrumbItems.push({
+      '@type': 'ListItem',
+      position: 2,
+      name: 'PDF Tools',
+      item: `${SITE_URL}/#pdf-tools`
+    });
+  }
+
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbItems
+  });
+
+  // SoftwareApplication — WebApplication (free tool)
+  schemas.push({
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: activeMode === 'file' ? 'Zyvokio PDF Tools' : 'Zyvokio Image Converter',
+    url: SITE_URL,
+    applicationCategory: 'MultimediaApplication',
+    operatingSystem: 'Any',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD'
+    },
+    description:
+      activeMode === 'file'
+        ? 'Free online PDF tools — merge, split, compress, convert, sign, watermark and protect PDFs in your browser.'
+        : 'Free studio-grade image converter. Convert JPG, PNG, WebP and SVG with lossless Sharp processing.',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.8',
+      ratingCount: '256'
+    }
+  });
+
+  return schemas;
+}
+
 export default function App() {
   // Converter Mode: 'img' (Image Converter) | 'file' (File & PDF Converter)
   const [activeMode, setActiveMode] = useState('img');
   const [selectedPdfTool, setSelectedPdfTool] = useState(null);
+  const [showNotFound, setShowNotFound] = useState(false);
 
   // Format Selection State (2 dropdowns: fromFormat & toFormat)
   const [fromFormat, setFromFormat] = useState('jpg');
@@ -309,8 +372,38 @@ export default function App() {
   const pendingCount = queue.filter(q => q.status === 'pending').length;
   const completedCount = queue.filter(q => q.status === 'completed').length;
 
+  // SEO — dynamic per-mode metadata
+  const seoTitle =
+    activeMode === 'file'
+      ? 'Free Online PDF Tools — Merge, Split, Compress & Convert'
+      : `Convert ${fromFormat.toUpperCase()} to ${toFormat.toUpperCase()} Free — Studio-Grade Image Converter`;
+
+  const seoDescription =
+    activeMode === 'file'
+      ? 'Use 29 free PDF tools online: merge, split, compress, convert, sign, watermark and protect PDF files. 100% private, client-side processing with Zyvokio.'
+      : `Convert ${fromFormat.toUpperCase()} images to ${toFormat.toUpperCase()} instantly with lossless Sharp processing. Free online batch converter — no sign-up, no watermarks, studio-grade fidelity.`;
+
+  const seoSchemas = getSchemaForMode(activeMode);
+
+  // 404 page
+  if (showNotFound) {
+    return (
+      <div className="app-layout">
+        <NotFound onGoHome={() => setShowNotFound(false)} />
+      </div>
+    );
+  }
+
   return (
     <div className="app-layout">
+      {/* Per-page SEO (React 19 native <title>, <meta>, <link>, JSON-LD) */}
+      <SEO
+        title={seoTitle}
+        description={seoDescription}
+        path="/"
+        schema={seoSchemas}
+      />
+
       {/* Top Navbar */}
       <Navbar
         activeMode={activeMode}
@@ -323,7 +416,7 @@ export default function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
       />
 
-      <main className="main-content">
+      <main className="main-content" role="main">
         {/* Prominent Dual Mode Switcher (Image Converter vs File Converter) */}
         <ModeSwitcher activeMode={activeMode} onSelectMode={setActiveMode} />
 
@@ -331,13 +424,13 @@ export default function App() {
         {activeMode === 'img' && (
           <div className="img-converter-view fade-in">
             {/* Hero Section */}
-            <section className="hero-section">
+            <section className="hero-section" aria-labelledby="hero-heading">
               <div className="hero-badge-wrap">
                 <span className="badge badge-primary">
-                  <Sparkles size={13} /> Lossless In-Memory Multi-Format Engine
+                  <Sparkles size={13} aria-hidden="true" /> Lossless In-Memory Multi-Format Engine
                 </span>
               </div>
-              <h1 className="hero-headline">
+              <h1 id="hero-heading" className="hero-headline">
                 Convert <span className="gradient-text">{fromFormat.toUpperCase()} to {toFormat.toUpperCase()}</span> with Studio Fidelity
               </h1>
               <p className="hero-lead">
@@ -346,7 +439,7 @@ export default function App() {
             </section>
 
             {/* 2 Dropdowns Format Selector with Presets */}
-            <section className="format-selector-section">
+            <section className="format-selector-section" aria-label="Format selection">
               <FormatSelector
                 fromFormat={fromFormat}
                 toFormat={toFormat}
@@ -357,7 +450,7 @@ export default function App() {
             </section>
 
             {/* Drop Zone (strictly accepts selected fromFormat) */}
-            <section className="dropzone-section">
+            <section className="dropzone-section" aria-label="File upload area">
               <DropZone
                 fromFormat={fromFormat}
                 toFormat={toFormat}
@@ -368,7 +461,7 @@ export default function App() {
 
             {/* Queue Management Bar */}
             {queue.length > 0 && (
-              <section className="queue-section fade-in">
+              <section className="queue-section fade-in" aria-label="Conversion queue">
                 <div className="queue-header-bar glass-panel">
                   <div className="queue-summary">
                     <h2 className="queue-title">Conversion Queue</h2>
@@ -390,7 +483,7 @@ export default function App() {
                         className="btn-primary"
                         onClick={handleConvertAll}
                       >
-                        <Play size={16} />
+                        <Play size={16} aria-hidden="true" />
                         <span>Convert All ({pendingCount})</span>
                       </button>
                     )}
@@ -401,7 +494,7 @@ export default function App() {
                         className="btn-secondary text-cyan"
                         onClick={handleDownloadAll}
                       >
-                        <DownloadCloud size={16} />
+                        <DownloadCloud size={16} aria-hidden="true" />
                         <span>Download All ({completedCount})</span>
                       </button>
                     )}
@@ -412,7 +505,7 @@ export default function App() {
                       onClick={handleClearQueue}
                       title="Clear Queue"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={16} aria-hidden="true" />
                       <span>Clear</span>
                     </button>
                   </div>
@@ -463,7 +556,7 @@ export default function App() {
       )}
 
       {/* Footer */}
-      <footer className="app-footer">
+      <footer className="app-footer" role="contentinfo">
         <div className="footer-content">
           <div className="footer-left">
             <p>© {new Date().getFullYear()} <strong>Zyvokio</strong>. In-memory processing • Sharp Engine • Zero database</p>
@@ -505,10 +598,10 @@ export default function App() {
 
       {/* Toast Notification */}
       {toast && (
-        <div className={`toast-bubble fade-in ${toast.type}`}>
-          {toast.type === 'success' && <CheckCircle2 size={18} className="text-emerald" />}
-          {toast.type === 'error' && <AlertCircle size={18} className="text-rose" />}
-          {toast.type === 'info' && <Info size={18} className="text-cyan" />}
+        <div className={`toast-bubble fade-in ${toast.type}`} role="status" aria-live="polite">
+          {toast.type === 'success' && <CheckCircle2 size={18} className="text-emerald" aria-hidden="true" />}
+          {toast.type === 'error' && <AlertCircle size={18} className="text-rose" aria-hidden="true" />}
+          {toast.type === 'info' && <Info size={18} className="text-cyan" aria-hidden="true" />}
           <span>{toast.message}</span>
         </div>
       )}

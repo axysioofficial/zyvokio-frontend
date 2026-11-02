@@ -588,7 +588,7 @@ export default function PdfToolModal({ tool, onClose, onRecordAdded }) {
                           <div className="thumbnails-row">
                             {snapshots.map((snap, idx) => (
                               <div key={idx} className="thumb-item">
-                                <img src={snap} alt={`Page ${idx + 1}`} className="thumb-img" />
+                                <img src={snap} alt={`Scanned document page ${idx + 1}`} className="thumb-img" loading="lazy" width="80" height="100" />
                                 <span className="thumb-num">P.{idx + 1}</span>
                                 <button
                                   type="button"

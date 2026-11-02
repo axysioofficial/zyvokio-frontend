@@ -20,7 +20,7 @@ export default function Navbar({
         <div className="brand-group">
           <div className="brand-logo-glow">
             <div className="brand-logo-icon" aria-hidden="true">
-              <img src="/01_transparent_logo.png" alt="Zyvokio Logo" className="brand-logo-img" />
+              <img src="/01_transparent_logo.png" alt="Zyvokio — Studio-grade image and PDF converter" width="32" height="32" className="brand-logo-img" />
             </div>
           </div>
 

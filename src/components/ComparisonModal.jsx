@@ -161,7 +161,7 @@ export default function ComparisonModal({ item, onClose, onDownload }) {
                   <span className="side-meta">{formatBytes(origSize)}</span>
                 </div>
                 <div className="side-box-img-wrap transparency-grid-bg">
-                  <img src={originalSrc} alt={`Original ${fromFmt}`} />
+                  <img src={originalSrc} alt={`Original ${fromFmt} version of ${item.name}`} loading="lazy" />
                 </div>
               </div>
 
@@ -174,7 +174,7 @@ export default function ComparisonModal({ item, onClose, onDownload }) {
                   <span className="side-meta">{formatBytes(convSize)}</span>
                 </div>
                 <div className="side-box-img-wrap transparency-grid-bg">
-                  <img src={convertedSrc} alt={`Converted ${toFmt}`} />
+                  <img src={convertedSrc} alt={`Converted ${toFmt} version of ${item.name}`} loading="lazy" />
                 </div>
               </div>
             </div>

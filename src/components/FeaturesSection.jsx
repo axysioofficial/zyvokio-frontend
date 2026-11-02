@@ -26,9 +26,9 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section className="features-section">
+    <section className="features-section" aria-labelledby="features-heading">
       <div className="features-header">
-        <h2 className="features-title">
+        <h2 id="features-heading" className="features-title">
           Engineered for <span className="gradient-text">Speed & Privacy</span>
         </h2>
         <p className="features-subtitle">
