@@ -5,20 +5,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Google tag (gtag.js) - GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8ZSYKG4DN0"></script>
+  <!-- Google Tag Manager -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
+    (function (w, d, s, l, i) {
+      w[l] = w[l] || [];
+      w[l].push({
+        'gtm.start': new Date().getTime(),
+        event: 'gtm.js'
+      });
 
-    gtag('config', 'G-8ZSYKG4DN0');
+      var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s),
+        dl = l !== 'dataLayer' ? '&l=' + l : '';
+
+      j.async = true;
+      j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+
+      f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-W2VS8LJL');
   </script>
+  <!-- End Google Tag Manager -->
 
-  <!-- Default Page Title & Meta (overridden per-page by React 19 <SEO /> component) -->
+  <!-- Default Page Title & Meta -->
   <title>Zyvokio — Studio-Grade Image & PDF Converter | Free Online Tools</title>
+
   <meta name="description"
     content="Convert images and PDFs instantly with Zyvokio. Free studio-grade converter powered by Sharp — supports JPG, PNG, WebP, SVG, and 29 PDF tools with zero sign-up." />
+
   <meta name="keywords"
     content="image converter, pdf tools, png converter, jpg to png, webp converter, svg to png, pdf merge, pdf compress, zyvokio, free online converter" />
 
@@ -31,7 +45,7 @@
   <meta name="color-scheme" content="dark" />
   <meta name="msapplication-TileColor" content="#087FAF" />
 
-  <!-- Canonical URL (overridden per-page by React 19 <SEO /> component) -->
+  <!-- Canonical URL -->
   <link rel="canonical" href="https://zyvokio.vercel.app/" />
 
   <!-- Favicons & Touch Icons -->
@@ -41,7 +55,7 @@
   <link rel="shortcut icon" href="/favicon.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/06_favicon_transparent.png" />
 
-  <!-- Open Graph (defaults — overridden per-page by React 19 <SEO /> component) -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Zyvokio" />
   <meta property="og:title" content="Zyvokio — Studio-Grade Image & PDF Converter" />
@@ -54,12 +68,12 @@
   <meta property="og:image:alt" content="Zyvokio — Studio-Grade Image & PDF Converter" />
   <meta property="og:locale" content="en_US" />
 
-  <!-- Twitter Card (defaults — overridden per-page by React 19 <SEO /> component) -->
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@zyvokio" />
   <meta name="twitter:title" content="Zyvokio — Studio-Grade Image & PDF Converter" />
   <meta name="twitter:description"
-    content="Convert images and PDFs instantly with Zyvokio. Free studio-grade converter powered by Sharp — supports JPG, PNG, WebP, SVG, and 29 PDF tools." />
+    content="Convert images and PDFs instantly with Zyvokio. Free studio-grade image and PDF converter." />
   <meta name="twitter:image" content="https://zyvokio.vercel.app/og-image.png" />
   <meta name="twitter:image:alt" content="Zyvokio — Studio-Grade Image & PDF Converter" />
 
@@ -90,26 +104,31 @@
   <!-- Preconnect to Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
   <link
     href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet" />
 </head>
 
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W2VS8LJL" height="0" width="0"
+      style="display:none;visibility:hidden">
+    </iframe>
+  </noscript>
+  <!-- End Google Tag Manager (noscript) -->
   <div id="root"></div>
-
-  <!-- Noscript fallback for users with JavaScript disabled -->
   <noscript>
     <div
       style="padding: 2rem; text-align: center; font-family: system-ui, sans-serif; background: #071B24; color: #e0e0e0; min-height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column;">
       <h1>Zyvokio — Image & PDF Converter</h1>
       <p style="max-width: 500px; line-height: 1.6;">
         Zyvokio requires JavaScript to run. Please enable JavaScript in your browser settings to use our free
-        studio-grade image converter and 29 PDF tools.
+        studio-grade image converter and PDF tools.
       </p>
     </div>
   </noscript>
-
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
