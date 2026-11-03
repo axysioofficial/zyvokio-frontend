@@ -24,7 +24,11 @@ export default function SEO({
   schema = null
 }) {
   const canonicalUrl = `${SITE_URL}${path}`;
-  const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
+  // Ensure title stays strictly between 30 and 60 characters
+  let fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
+  if (fullTitle.length > 60) {
+    fullTitle = fullTitle.slice(0, 57).trim() + '...';
+  }
 
   return (
     <>

@@ -367,16 +367,16 @@ export default function App() {
   const pendingCount = queue.filter(q => q.status === 'pending').length;
   const completedCount = queue.filter(q => q.status === 'completed').length;
 
-  // SEO — dynamic per-mode metadata
+  // SEO — dynamic per-mode metadata (title strictly 30-60 chars, description 110-160 chars)
   const seoTitle =
     activeMode === 'file'
-      ? 'Free Online PDF Tools — Merge, Split, Compress & Convert'
-      : `Convert ${fromFormat.toUpperCase()} to ${toFormat.toUpperCase()} Free — Studio-Grade Image Converter`;
+      ? 'Free Online PDF Tools | Zyvokio'
+      : `Convert ${fromFormat.toUpperCase()} to ${toFormat.toUpperCase()} Online | Zyvokio`;
 
   const seoDescription =
     activeMode === 'file'
       ? 'Use 29 free PDF tools online: merge, split, compress, convert, sign, watermark and protect PDF files. 100% private, client-side processing with Zyvokio.'
-      : `Convert ${fromFormat.toUpperCase()} images to ${toFormat.toUpperCase()} instantly with lossless Sharp processing. Free online batch converter — no sign-up, no watermarks, studio-grade fidelity.`;
+      : `Convert ${fromFormat.toUpperCase()} to ${toFormat.toUpperCase()} online with Zyvokio. Fast, private, studio-grade Sharp converter with zero quality loss. Free batch conversion.`;
 
   const seoSchemas = getSchemaForMode(activeMode);
 

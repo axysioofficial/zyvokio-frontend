@@ -59,7 +59,7 @@ export default function FormatSelector({
             <Sparkles size={18} className="text-cyan" />
           </div>
           <div>
-            <h3 className="format-selector-title">Conversion Pipeline</h3>
+            <h2 className="format-selector-title">Conversion Pipeline</h2>
             <p className="format-selector-desc">
               Select input format and desired output. Upload is strictly locked to <strong>{currentSourceMeta.ext}</strong>.
             </p>
