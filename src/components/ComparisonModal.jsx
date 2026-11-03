@@ -105,6 +105,8 @@ export default function ComparisonModal({ item, onClose, onDownload }) {
                 alt={`Converted ${toFmt}`} 
                 className="split-img-layer converted-layer" 
                 draggable="false"
+                width="600"
+                height="400"
               />
               <div className="split-layer-badge right">
                 <span className="badge-dot emerald"></span>
@@ -121,6 +123,8 @@ export default function ComparisonModal({ item, onClose, onDownload }) {
                   alt={`Original ${fromFmt}`} 
                   className="split-img-layer original-layer" 
                   draggable="false"
+                  width="600"
+                  height="400"
                 />
                 <div className="split-layer-badge left">
                   <span className="badge-dot amber"></span>
@@ -161,7 +165,7 @@ export default function ComparisonModal({ item, onClose, onDownload }) {
                   <span className="side-meta">{formatBytes(origSize)}</span>
                 </div>
                 <div className="side-box-img-wrap transparency-grid-bg">
-                  <img src={originalSrc} alt={`Original ${fromFmt} version of ${item.name}`} loading="lazy" />
+                  <img src={originalSrc} alt={`Original ${fromFmt} version of ${item.name}`} loading="lazy" width="600" height="400" />
                 </div>
               </div>
 
@@ -174,7 +178,7 @@ export default function ComparisonModal({ item, onClose, onDownload }) {
                   <span className="side-meta">{formatBytes(convSize)}</span>
                 </div>
                 <div className="side-box-img-wrap transparency-grid-bg">
-                  <img src={convertedSrc} alt={`Converted ${toFmt} version of ${item.name}`} loading="lazy" />
+                  <img src={convertedSrc} alt={`Converted ${toFmt} version of ${item.name}`} loading="lazy" width="600" height="400" />
                 </div>
               </div>
             </div>

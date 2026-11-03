@@ -67,12 +67,13 @@ export default function SettingsModal({
           <div className="setting-group">
             <div className="setting-label-row">
               <div>
-                <label className="setting-title">PNG Compression Level</label>
+                <label htmlFor="png-compression-level" className="setting-title">PNG Compression Level</label>
                 <p className="setting-desc">Level 0 (no compression, fastest) to 9 (maximum compression, smaller file)</p>
               </div>
               <span className="setting-val-badge">Level {preferences.compressionLevel}</span>
             </div>
             <input 
+              id="png-compression-level"
               type="range"
               min="0"
               max="9"
@@ -80,6 +81,7 @@ export default function SettingsModal({
               value={preferences.compressionLevel}
               onChange={(e) => handleChange('compressionLevel', parseInt(e.target.value, 10))}
               className="range-slider"
+              aria-label="PNG Compression Level"
             />
             <div className="slider-markers">
               <span>0 (Fast)</span>
@@ -92,12 +94,13 @@ export default function SettingsModal({
           <div className="setting-group">
             <div className="setting-label-row">
               <div>
-                <label className="setting-title">PNG Render Quality</label>
+                <label htmlFor="png-render-quality" className="setting-title">PNG Render Quality</label>
                 <p className="setting-desc">Controls palette quantization and color fidelity</p>
               </div>
               <span className="setting-val-badge">{preferences.quality}%</span>
             </div>
             <input 
+              id="png-render-quality"
               type="range"
               min="75"
               max="100"
@@ -105,6 +108,7 @@ export default function SettingsModal({
               value={preferences.quality}
               onChange={(e) => handleChange('quality', parseInt(e.target.value, 10))}
               className="range-slider"
+              aria-label="PNG Render Quality"
             />
             <div className="slider-markers">
               <span>75%</span>
@@ -116,14 +120,16 @@ export default function SettingsModal({
           {/* Auto Download Toggle */}
           <div className="setting-group-toggle">
             <div>
-              <label className="setting-title">Auto-Download Converted PNG</label>
+              <label htmlFor="auto-download-toggle" className="setting-title">Auto-Download Converted PNG</label>
               <p className="setting-desc">Automatically trigger browser file download upon conversion completion</p>
             </div>
-            <label className="toggle-switch">
+            <label className="toggle-switch" htmlFor="auto-download-toggle">
               <input 
+                id="auto-download-toggle"
                 type="checkbox" 
                 checked={preferences.autoDownload}
                 onChange={(e) => handleChange('autoDownload', e.target.checked)}
+                aria-label="Auto-Download Converted PNG"
               />
               <span className="toggle-slider"></span>
             </label>

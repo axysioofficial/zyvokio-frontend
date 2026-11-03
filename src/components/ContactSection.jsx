@@ -196,7 +196,7 @@ export default function ContactSection({ onNotify }) {
                 <Clock size={18} className="text-cyan" />
               </div>
               <div className="contact-feature-text">
-                <h4 className="contact-feature-title">Fast Response Guarantee</h4>
+                <h3 className="contact-feature-title">Fast Response Guarantee</h3>
                 <p className="contact-feature-desc">Inquiries typically answered within 2 hours during active deployment cycles.</p>
               </div>
             </div>
@@ -206,7 +206,7 @@ export default function ContactSection({ onNotify }) {
                 <ShieldCheck size={18} className="text-emerald" />
               </div>
               <div className="contact-feature-text">
-                <h4 className="contact-feature-title">Privacy Protected</h4>
+                <h3 className="contact-feature-title">Privacy Protected</h3>
                 <p className="contact-feature-desc">Zero message tracking. In-memory buffers ensure your inquiry is never shared.</p>
               </div>
             </div>
@@ -216,7 +216,7 @@ export default function ContactSection({ onNotify }) {
                 <Cpu size={18} className="text-indigo" />
               </div>
               <div className="contact-feature-text">
-                <h4 className="contact-feature-title">Direct to Engineers</h4>
+                <h3 className="contact-feature-title">Direct to Engineers</h3>
                 <p className="contact-feature-desc">Your suggestions directly influence our Sharp & Libvips rendering pipeline.</p>
               </div>
             </div>

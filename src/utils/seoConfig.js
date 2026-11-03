@@ -10,10 +10,10 @@ export const SITE_URL = 'https://zyvokio.vercel.app';
 
 export const SITE_NAME = 'Zyvokio';
 
-export const DEFAULT_TITLE = 'Zyvokio — Studio-Grade Image & PDF Converter | Free Online Tools';
+export const DEFAULT_TITLE = 'Zyvokio — Studio-Grade Image & PDF Converter | Free Tools';
 
 export const DEFAULT_DESCRIPTION =
-  'Convert images and PDFs instantly with Zyvokio. Free studio-grade converter powered by Sharp — supports JPG, PNG, WebP, SVG, and 29 PDF tools with zero sign-up.';
+  'Convert images and PDFs online with Zyvokio. Studio-grade converter with Sharp engine — merge, split, compress, sign, and convert JPG, PNG, WebP, SVG for free.';
 
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
 

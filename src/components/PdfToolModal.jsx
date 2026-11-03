@@ -611,18 +611,22 @@ export default function PdfToolModal({ tool, onClose, onRecordAdded }) {
                   <div className="dropzone-half glass-panel">
                     <span className="doc-tag">Document A</span>
                     <input
+                      id="compare-doc-a"
                       type="file"
                       accept=".pdf"
                       onChange={(e) => setSelectedFiles([e.target.files[0]])}
+                      aria-label="Upload first PDF document for comparison"
                     />
                     <p className="drop-hint">{selectedFiles[0]?.name || 'Select First PDF'}</p>
                   </div>
                   <div className="dropzone-half glass-panel">
                     <span className="doc-tag">Document B</span>
                     <input
+                      id="compare-doc-b"
                       type="file"
                       accept=".pdf"
                       onChange={(e) => setFile2(e.target.files[0])}
+                      aria-label="Upload second PDF document for comparison"
                     />
                     <p className="drop-hint">{file2?.name || 'Select Second PDF'}</p>
                   </div>
@@ -733,13 +737,15 @@ export default function PdfToolModal({ tool, onClose, onRecordAdded }) {
                     </div>
                     {splitMode === 'range' && (
                       <div className="input-group-row mt-2">
-                        <label className="text-xs text-muted">Pages to extract:</label>
+                        <label htmlFor="pdf-split-range" className="text-xs text-muted">Pages to extract:</label>
                         <input
+                          id="pdf-split-range"
                           type="text"
                           className="styled-text-input"
                           placeholder="e.g. 1-2, 4"
                           value={splitRange}
                           onChange={(e) => setSplitRange(e.target.value)}
+                          aria-label="Pages to extract"
                         />
                       </div>
                     )}
@@ -748,13 +754,15 @@ export default function PdfToolModal({ tool, onClose, onRecordAdded }) {
 
                 {tool.id === 'remove-pages' && (
                   <div className="options-content">
-                    <label className="option-label">Pages to remove (comma separated):</label>
+                    <label htmlFor="pdf-remove-pages" className="option-label">Pages to remove (comma separated):</label>
                     <input
+                      id="pdf-remove-pages"
                       type="text"
                       className="styled-text-input"
                       placeholder="e.g. 2, 4"
                       value={pagesToRemoveStr}
                       onChange={(e) => setPagesToRemoveStr(e.target.value)}
+                      aria-label="Pages to remove"
                     />
                   </div>
                 )}
@@ -820,31 +828,37 @@ export default function PdfToolModal({ tool, onClose, onRecordAdded }) {
                 {tool.id === 'watermark-pdf' && (
                   <div className="options-content-grid">
                     <div className="input-field-wrap">
-                      <label className="option-label">Watermark Text:</label>
+                      <label htmlFor="watermark-text-input" className="option-label">Watermark Text:</label>
                       <input
+                        id="watermark-text-input"
                         type="text"
                         className="styled-text-input"
                         value={watermarkText}
                         onChange={(e) => setWatermarkText(e.target.value)}
+                        aria-label="Watermark Text"
                       />
                     </div>
                     <div className="input-field-wrap">
-                      <label className="option-label">Opacity ({Math.round(watermarkOpacity * 100)}%):</label>
+                      <label htmlFor="watermark-opacity-input" className="option-label">Opacity ({Math.round(watermarkOpacity * 100)}%):</label>
                       <input
+                        id="watermark-opacity-input"
                         type="range"
                         min="0.05"
                         max="0.8"
                         step="0.05"
                         value={watermarkOpacity}
                         onChange={(e) => setWatermarkOpacity(parseFloat(e.target.value))}
+                        aria-label="Watermark Opacity"
                       />
                     </div>
                     <div className="input-field-wrap">
-                      <label className="option-label">Color:</label>
+                      <label htmlFor="watermark-color-input" className="option-label">Color:</label>
                       <input
+                        id="watermark-color-input"
                         type="color"
                         value={watermarkColor}
                         onChange={(e) => setWatermarkColor(e.target.value)}
+                        aria-label="Watermark Color"
                       />
                     </div>
                   </div>
@@ -853,11 +867,13 @@ export default function PdfToolModal({ tool, onClose, onRecordAdded }) {
                 {tool.id === 'page-numbers' && (
                   <div className="options-content-grid">
                     <div className="input-field-wrap">
-                      <label className="option-label">Format:</label>
+                      <label htmlFor="page-number-format-select" className="option-label">Format:</label>
                       <select
+                        id="page-number-format-select"
                         className="styled-select"
                         value={pageNumberFormat}
                         onChange={(e) => setPageNumberFormat(e.target.value)}
+                        aria-label="Page number format"
                       >
                         <option value="page_n_of_m">Page 1 of N</option>
                         <option value="simple">1</option>
@@ -865,11 +881,13 @@ export default function PdfToolModal({ tool, onClose, onRecordAdded }) {
                       </select>
                     </div>
                     <div className="input-field-wrap">
-                      <label className="option-label">Position:</label>
+                      <label htmlFor="page-number-pos-select" className="option-label">Position:</label>
                       <select
+                        id="page-number-pos-select"
                         className="styled-select"
                         value={pageNumberPos}
                         onChange={(e) => setPageNumberPos(e.target.value)}
+                        aria-label="Page number position"
                       >
                         <option value="bottom-center">Bottom Center</option>
                         <option value="bottom-right">Bottom Right</option>
@@ -881,13 +899,15 @@ export default function PdfToolModal({ tool, onClose, onRecordAdded }) {
 
                 {tool.id === 'protect-pdf' && (
                   <div className="options-content">
-                    <label className="option-label">Encryption Password:</label>
+                    <label htmlFor="protect-password-input" className="option-label">Encryption Password:</label>
                     <input
+                      id="protect-password-input"
                       type="password"
                       className="styled-text-input"
                       placeholder="Enter a secure password..."
                       value={protectPassword}
                       onChange={(e) => setProtectPassword(e.target.value)}
+                      aria-label="PDF Encryption Password"
                     />
                   </div>
                 )}
@@ -956,12 +976,14 @@ export default function PdfToolModal({ tool, onClose, onRecordAdded }) {
 
                 {tool.id === 'edit-pdf' && (
                   <div className="options-content">
-                    <label className="option-label">Annotation Note Text:</label>
+                    <label htmlFor="annotation-note-input" className="option-label">Annotation Note Text:</label>
                     <input
+                      id="annotation-note-input"
                       type="text"
                       className="styled-text-input"
                       value={annotationText}
                       onChange={(e) => setAnnotationText(e.target.value)}
+                      aria-label="Annotation Note Text"
                     />
                   </div>
                 )}

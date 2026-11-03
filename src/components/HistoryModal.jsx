@@ -125,11 +125,13 @@ export default function HistoryModal({
             <div className="search-input-wrapper">
               <Search size={15} className="search-icon" />
               <input 
+                id="history-search-input"
                 type="text" 
                 className="search-input"
                 placeholder="Search history by filename or format..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                aria-label="Search conversion history"
               />
               {searchTerm && (
                 <button 

@@ -160,6 +160,7 @@ export default function DropZone({
         multiple
         style={{ display: 'none' }}
         onChange={handleInputChange}
+        aria-label={`Upload ${activeConfig.label} files`}
       />
 
       <div className="dropzone-glow-layer" />
