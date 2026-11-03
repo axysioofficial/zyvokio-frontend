@@ -41,9 +41,6 @@ export async function convertImageBlob(file, { fromFormat, toFormat = 'png', opt
 
   const response = await fetch(`${API_BASE_URL}/api/convert/process?${queryParams.toString()}`, {
     method: 'POST',
-    headers: {
-      ...(fromFormat ? { 'X-From-Format': fromFormat } : {})
-    },
     body: formData
   });
 
