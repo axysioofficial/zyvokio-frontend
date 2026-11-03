@@ -37,7 +37,7 @@ export default function SettingsModal({
     onUpdatePreferences({
       compressionLevel: 8,
       quality: 100,
-      autoDownload: true
+      autoDownload: false
     });
   };
 

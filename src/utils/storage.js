@@ -4,7 +4,7 @@ const PREFERENCES_STORAGE_KEY = 'picmorph_user_preferences_v1';
 const DEFAULT_PREFERENCES = {
   compressionLevel: 8,
   quality: 100,
-  autoDownload: true,
+  autoDownload: false,
   viewMode: 'grid', // 'grid' | 'table'
   soundEnabled: true
 };

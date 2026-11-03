@@ -308,11 +308,6 @@ export default function App() {
 
       showToast(`Successfully converted to ${result.filename}!`, 'success');
 
-      // Auto download if enabled
-      if (preferences.autoDownload) {
-        triggerDownload(result.blob, result.filename);
-      }
-
     } catch (err) {
       console.error('Conversion error:', err);
       setQueue(prev => prev.map(q => {
