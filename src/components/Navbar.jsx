@@ -1,5 +1,6 @@
 import React from 'react';
 import { History, Sliders, CheckCircle2, Mail } from 'lucide-react';
+import { SITE_URL } from '../utils/seoConfig';
 
 export default function Navbar({ 
   activeMode = 'img',
@@ -17,7 +18,18 @@ export default function Navbar({
     <header className="navbar-container" role="banner">
       <div className="navbar-content">
         {/* Brand */}
-        <div className="brand-group">
+        <a
+          href={SITE_URL || '/'}
+          className="brand-group"
+          title={`Zyvokio — ${SITE_URL || 'https://zyvokio.vercel.app'}`}
+          onClick={(e) => {
+            if (onSelectMode && activeMode !== 'img') {
+              e.preventDefault();
+              onSelectMode('img');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}
+        >
           <div className="brand-logo-glow">
             <div className="brand-logo-icon" aria-hidden="true">
               <img src="/01_transparent_logo.png" alt="Zyvokio — Studio-grade image and PDF converter" width="32" height="32" className="brand-logo-img" />
@@ -39,7 +51,7 @@ export default function Navbar({
             </div>
             <p className="brand-subtitle">Studio-Grade Image & PDF Converter</p>
           </div>
-        </div>
+        </a>
 
         {/* Central Quick Mode Switcher */}
         {onSelectMode && (

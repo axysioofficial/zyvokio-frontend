@@ -51,6 +51,14 @@
   align-items: center;
   gap: 12px;
   min-width: 0;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.brand-group:hover {
+  opacity: 0.92;
 }
 
 .brand-logo-glow {
