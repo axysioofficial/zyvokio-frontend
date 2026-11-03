@@ -2171,17 +2171,23 @@
 }
 
 .quick-topic-pill {
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 500;
   color: var(--text-secondary);
   background: #FFFFFF;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-full);
-  padding: 5px 12px;
+  padding: 10px 18px;
+  min-height: 48px;
+  min-width: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: all var(--transition-fast);
   font-family: inherit;
   box-shadow: var(--shadow-sm);
+  position: relative;
 }
 
 .quick-topic-pill:hover {
@@ -2367,17 +2373,20 @@
 
 .urgency-pill-group {
   display: flex;
-  gap: 6px;
-  height: 42px;
+  gap: 8px;
+  min-height: 48px;
 }
 
 .urgency-pill {
   flex: 1;
+  min-height: 48px;
+  min-width: 48px;
+  padding: 10px 14px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   background: var(--zyvokio-offwhite);
   color: var(--text-secondary);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -2385,6 +2394,7 @@
   align-items: center;
   justify-content: center;
   font-family: inherit;
+  position: relative;
 }
 
 .urgency-pill:hover {
@@ -2605,6 +2615,15 @@
   border-color: rgba(18, 207, 229, 0.35);
   background: rgba(18, 207, 229, 0.1);
   transition: all var(--transition-fast);
+  min-height: 48px;
+  min-width: 48px;
+  padding: 10px 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  position: relative;
 }
 
 .footer-pill-interactive:hover {
@@ -2645,7 +2664,8 @@
   }
 
   .urgency-pill-group {
-    height: 38px;
+    min-height: 48px;
+    height: 48px;
   }
 }
 

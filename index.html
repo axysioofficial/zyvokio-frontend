@@ -122,6 +122,27 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" />
   </noscript>
+
+  <!-- Critical Inline CSS for instant First Contentful Paint -->
+  <style>
+    :root {
+      --zyvokio-navy: #071B24;
+      --zyvokio-text-black: #0B1220;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #FFFFFF;
+      color: #0B1220;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    #root {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
 </head>
 
 <body>
