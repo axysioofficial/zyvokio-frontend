@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE_URL = import.meta.env.API_URL || '';
 
 /**
  * Check backend server connectivity and health
@@ -166,7 +166,7 @@ export async function sendContactMessage(formData) {
     // If backend is totally unreachable or offline, allow a client-side simulated receipt
     // so user flow is never broken
     console.warn('Backend contact failed, falling back to client receipt:', error.message);
-    
+
     // If it was a user validation error from server (e.g., 400 Bad Request), rethrow
     if (error.message && (error.message.includes('valid email') || error.message.includes('characters long') || error.message.includes('provide your name'))) {
       throw error;
@@ -179,7 +179,7 @@ export async function sendContactMessage(formData) {
       const offlineTicket = `PM-OFFLINE-${Date.now().toString(36).toUpperCase()}`;
       existing.push({ ...formData, ticketId: offlineTicket, timestamp: new Date().toISOString() });
       localStorage.setItem(fallbackKey, JSON.stringify(existing));
-      
+
       return {
         success: true,
         ticketId: offlineTicket,
