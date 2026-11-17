@@ -126,12 +126,8 @@ export default function AdContainer({
   return (
     <div
       className={`adsterra-wrapper adsterra-${slotType} ${className}`}
-      aria-label="Sponsored Advertisement"
+      aria-label="Sponsored Content"
     >
-      <div className="adsterra-header">
-        <span className="adsterra-badge">{label}</span>
-      </div>
-
       <div
         className="adsterra-slot-box"
         style={{

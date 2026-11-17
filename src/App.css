@@ -4363,13 +4363,14 @@
 /* Adsterra Outer Wrapper */
 .adsterra-wrapper {
   background: #FFFFFF;
-  border: 1px solid rgba(8, 127, 175, 0.18);
+  border: 1px solid rgba(8, 127, 175, 0.15);
   border-radius: var(--radius-lg);
-  padding: 10px;
+  padding: 4px;
   position: relative;
   text-align: center;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-fast);
+  overflow: hidden;
 }
 
 .adsterra-wrapper:hover {
@@ -4379,33 +4380,14 @@
 
 .adsterra-banner {
   width: 100%;
-  max-width: 760px;
+  max-width: 740px;
   margin: 0 auto;
 }
 
 .adsterra-sidebar {
-  width: 170px;
-  min-height: 620px;
-  padding: 10px 5px;
-}
-
-.adsterra-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px;
-}
-
-.adsterra-badge {
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  background: #F1F5F9;
-  padding: 2px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-subtle);
+  width: 168px;
+  min-height: 608px;
+  padding: 4px;
 }
 
 .adsterra-slot-box {
@@ -4416,6 +4398,7 @@
   width: 100%;
   margin: 0 auto;
   position: relative;
+  border-radius: calc(var(--radius-lg) - 4px);
 }
 
 .adsterra-mount-target {
