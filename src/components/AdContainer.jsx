@@ -1,78 +1,119 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+// Adsterra Approved Ad Units for zyvokio.vercel.app
+const AD_UNITS = {
+  // Desktop Side Rails (Left & Right 160x600 Skyscrapers)
+  sidebar: {
+    key: 'd10c0e6836c5978e4d89d5c181f50769',
+    width: 160,
+    height: 600,
+    src: 'https://bauval.org/22/d10c0e6836c5978e4d89d5c181f50769'
+  },
+  // In-Content Desktop Leaderboard (728x90)
+  leaderboard: {
+    key: '42dc86d446dbee5162993c1e77a6a19f',
+    width: 728,
+    height: 90,
+    src: 'https://bauval.org/22/42dc86d446dbee5162993c1e77a6a19f'
+  },
+  // In-Content Mobile Rectangle (300x250)
+  rectangle: {
+    key: '218db45a87a820418cff772cc3f27ccc',
+    width: 300,
+    height: 250,
+    src: 'https://bauval.org/22/218db45a87a820418cff772cc3f27ccc'
+  }
+};
 
 /**
- * <AdContainer /> — Reusable Adsterra Ad Unit Container
- * 
- * Supports:
- * - In-content banners: 728x90 (Desktop) / 300x250 (Mobile) / 468x60
- * - Side skyscrapers: 160x600 (Desktop sidebars)
- * - Safe dynamic script loading in React
- * - Professional placeholder state when no key is configured
+ * <AdContainer /> — High-Reliability Adsterra Ad Unit for React
  *
- * Props:
- *   slotType  – 'banner' (default 728x90/300x250) | 'sidebar' (160x600) | 'native'
- *   zoneKey   – Custom Adsterra zone key (or falls back to VITE_ADSTERRA_BANNER_KEY / VITE_ADSTERRA_SIDEBAR_KEY)
- *   width     – Explicit width (default depends on slotType)
- *   height    – Explicit height (default depends on slotType)
- *   label     – Badge text (default "Advertisement")
- *   className – Extra CSS classes
+ * Uses an isolated sandboxed iframe to guarantee document.write & Adsterra script
+ * executes cleanly without React state conflicts, ad-block collisions, or re-render issues.
  */
 export default function AdContainer({
-  slotType = 'banner',
-  zoneKey = '',
-  width,
-  height,
+  slotType = 'banner', // 'banner' | 'sidebar'
   label = 'Advertisement',
   className = ''
 }) {
   const containerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Resolve dimensions based on slot type if not explicitly provided
-  const isSidebar = slotType === 'sidebar';
-  const resolvedWidth = width || (isSidebar ? 160 : 728);
-  const resolvedHeight = height || (isSidebar ? 600 : 90);
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
-  // Resolve key from prop, env variable, or default user key 6208066
-  const resolvedKey =
-    zoneKey ||
-    (isSidebar
-      ? import.meta.env.VITE_ADSTERRA_SIDEBAR_KEY
-      : import.meta.env.VITE_ADSTERRA_BANNER_KEY) ||
-    '6208066';
+  // Determine active unit based on slotType and screen size
+  const activeUnit =
+    slotType === 'sidebar'
+      ? AD_UNITS.sidebar
+      : isMobile
+      ? AD_UNITS.rectangle
+      : AD_UNITS.leaderboard;
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || !activeUnit) return;
 
-    // Clear previous ad content to prevent duplicates on re-render
     container.innerHTML = '';
 
-    if (!resolvedKey) return;
+    // Create an isolated iframe for reliable execution
+    const iframe = document.createElement('iframe');
+    iframe.width = `${activeUnit.width}px`;
+    iframe.height = `${activeUnit.height}px`;
+    iframe.style.border = 'none';
+    iframe.style.overflow = 'hidden';
+    iframe.style.display = 'block';
+    iframe.style.margin = '0 auto';
+    iframe.scrolling = 'no';
+    iframe.title = label;
+
+    container.appendChild(iframe);
 
     try {
-      // Create options script
-      const confScript = document.createElement('script');
-      confScript.type = 'text/javascript';
-      confScript.text = `
-        atOptions = {
-          'key' : '${resolvedKey}',
-          'format' : 'iframe',
-          'height' : ${resolvedHeight},
-          'width' : ${resolvedWidth},
-          'params' : {}
-        };
-      `;
-
-      // Create invoke script
-      const invokeScript = document.createElement('script');
-      invokeScript.type = 'text/javascript';
-      invokeScript.src = `//www.highperformanceformat.com/${resolvedKey}/invoke.js`;
-      invokeScript.async = true;
-
-      container.appendChild(confScript);
-      container.appendChild(invokeScript);
+      const doc = iframe.contentWindow.document;
+      doc.open();
+      doc.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <base target="_blank">
+            <style>
+              html, body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: transparent;
+                width: 100%;
+                height: 100%;
+              }
+            </style>
+          </head>
+          <body>
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '${activeUnit.key}',
+                'format' : 'iframe',
+                'height' : ${activeUnit.height},
+                'width' : ${activeUnit.width},
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="${activeUnit.src}"></script>
+          </body>
+        </html>
+      `);
+      doc.close();
     } catch (err) {
-      console.warn('Adsterra ad failed to initialize:', err);
+      console.warn('Adsterra frame execution error:', err);
     }
 
     return () => {
@@ -80,7 +121,7 @@ export default function AdContainer({
         container.innerHTML = '';
       }
     };
-  }, [resolvedKey, resolvedWidth, resolvedHeight]);
+  }, [activeUnit, label]);
 
   return (
     <div
@@ -94,31 +135,12 @@ export default function AdContainer({
       <div
         className="adsterra-slot-box"
         style={{
-          minHeight: `${resolvedHeight}px`,
-          maxWidth: isSidebar ? `${resolvedWidth}px` : '100%'
+          minHeight: `${activeUnit.height}px`,
+          minWidth: `${Math.min(activeUnit.width, 300)}px`
         }}
       >
-        {/* Dynamic Ad Script Mount Target */}
-        <div
-          ref={containerRef}
-          id={`container-${resolvedKey}`}
-          className="adsterra-mount-target"
-        />
-
-        {/* Informative placeholder shown when no zone key has been supplied */}
-        {!resolvedKey && (
-          <div className="adsterra-placeholder">
-            <div className="adsterra-placeholder-badge">Adsterra Ad Slot</div>
-            <div className="adsterra-placeholder-specs">
-              {isSidebar ? '160 × 600 Skyscraper' : '728 × 90 Leaderboard / 300 × 250 Banner'}
-            </div>
-            <p className="adsterra-placeholder-text">
-              Connect your <strong>Adsterra Zone Key</strong> in <code>.env</code> or pass <code>zoneKey</code> to display live ads.
-            </p>
-          </div>
-        )}
+        <div ref={containerRef} className="adsterra-mount-target" />
       </div>
     </div>
   );
 }
-
