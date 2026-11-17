@@ -32,13 +32,13 @@ export default function AdContainer({
   const resolvedWidth = width || (isSidebar ? 160 : 728);
   const resolvedHeight = height || (isSidebar ? 600 : 90);
 
-  // Resolve key from prop or env variable
+  // Resolve key from prop, env variable, or default user key 6208066
   const resolvedKey =
     zoneKey ||
     (isSidebar
       ? import.meta.env.VITE_ADSTERRA_SIDEBAR_KEY
       : import.meta.env.VITE_ADSTERRA_BANNER_KEY) ||
-    '';
+    '6208066';
 
   useEffect(() => {
     const container = containerRef.current;
@@ -99,7 +99,11 @@ export default function AdContainer({
         }}
       >
         {/* Dynamic Ad Script Mount Target */}
-        <div ref={containerRef} className="adsterra-mount-target" />
+        <div
+          ref={containerRef}
+          id={`container-${resolvedKey}`}
+          className="adsterra-mount-target"
+        />
 
         {/* Informative placeholder shown when no zone key has been supplied */}
         {!resolvedKey && (
@@ -117,3 +121,4 @@ export default function AdContainer({
     </div>
   );
 }
+
