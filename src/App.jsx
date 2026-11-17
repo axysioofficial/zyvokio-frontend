@@ -24,6 +24,7 @@ import ModeSwitcher from './components/ModeSwitcher';
 import PdfToolsGrid from './components/PdfToolsGrid';
 import PdfToolModal from './components/PdfToolModal';
 import NotFound from './components/NotFound';
+import AdContainer from './components/AdContainer';
 import './App.css';
 
 import { SITE_URL, SITE_NAME } from './utils/seoConfig';
@@ -411,132 +412,150 @@ export default function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
       />
 
-      <main className="main-content" role="main">
-        {/* Prominent Dual Mode Switcher (Image Converter vs File Converter) */}
-        <ModeSwitcher activeMode={activeMode} onSelectMode={setActiveMode} />
+      {/* Main Content Layout with Left & Right Desktop Ad Rails */}
+      <div className="app-main-wrapper">
+        {/* Left Side Ad Rail (160x600 Skyscraper - Desktop Widescreen) */}
+        <aside className="ad-side-rail ad-side-left" aria-label="Sponsored Ad Left">
+          <AdContainer slotType="sidebar" width={160} height={600} />
+        </aside>
 
-        {/* VIEW 1: IMAGE CONVERTER */}
-        {activeMode === 'img' && (
-          <div className="img-converter-view fade-in">
-            {/* Hero Section */}
-            <section className="hero-section" aria-labelledby="hero-heading">
-              <div className="hero-badge-wrap">
-                <span className="badge badge-primary">
-                  <Sparkles size={13} aria-hidden="true" /> Lossless In-Memory Multi-Format Engine
-                </span>
-              </div>
-              <h1 id="hero-heading" className="hero-headline">
-                Convert <span className="gradient-text">{fromFormat.toUpperCase()} to {toFormat.toUpperCase()}</span> with Studio Fidelity
-              </h1>
-              <p className="hero-lead">
-                Lightning-fast image converter powered by Sharp and libvips. Runs completely in Node.js memory with zero database, storing conversion records securely in your browser LocalStorage.
-              </p>
-            </section>
+        <main className="main-content" role="main">
+          {/* Prominent Dual Mode Switcher (Image Converter vs File Converter) */}
+          <ModeSwitcher activeMode={activeMode} onSelectMode={setActiveMode} />
 
-            {/* 2 Dropdowns Format Selector with Presets */}
-            <section className="format-selector-section" aria-label="Format selection">
-              <FormatSelector
-                fromFormat={fromFormat}
-                toFormat={toFormat}
-                onChangeFrom={setFromFormat}
-                onChangeTo={setToFormat}
-                onSelectPreset={handleSelectPreset}
-              />
-            </section>
+          {/* VIEW 1: IMAGE CONVERTER */}
+          {activeMode === 'img' && (
+            <div className="img-converter-view fade-in">
+              {/* Hero Section */}
+              <section className="hero-section" aria-labelledby="hero-heading">
+                <div className="hero-badge-wrap">
+                  <span className="badge badge-primary">
+                    <Sparkles size={13} aria-hidden="true" /> Lossless In-Memory Multi-Format Engine
+                  </span>
+                </div>
+                <h1 id="hero-heading" className="hero-headline">
+                  Convert <span className="gradient-text">{fromFormat.toUpperCase()} to {toFormat.toUpperCase()}</span> with Studio Fidelity
+                </h1>
+                <p className="hero-lead">
+                  Lightning-fast image converter powered by Sharp and libvips. Runs completely in Node.js memory with zero database, storing conversion records securely in your browser LocalStorage.
+                </p>
+              </section>
 
-            {/* Drop Zone (strictly accepts selected fromFormat) */}
-            <section className="dropzone-section" aria-label="File upload area">
-              <DropZone
-                fromFormat={fromFormat}
-                toFormat={toFormat}
-                onFilesSelected={handleFilesSelected}
-                onError={(msg) => showToast(msg, 'error')}
-              />
-            </section>
+              {/* 2 Dropdowns Format Selector with Presets */}
+              <section className="format-selector-section" aria-label="Format selection">
+                <FormatSelector
+                  fromFormat={fromFormat}
+                  toFormat={toFormat}
+                  onChangeFrom={setFromFormat}
+                  onChangeTo={setToFormat}
+                  onSelectPreset={handleSelectPreset}
+                />
+              </section>
 
-            {/* Queue Management Bar */}
-            {queue.length > 0 && (
-              <section className="queue-section fade-in" aria-label="Conversion queue">
-                <div className="queue-header-bar glass-panel">
-                  <div className="queue-summary">
-                    <h2 className="queue-title">Conversion Queue</h2>
-                    <div className="queue-counts">
-                      <span className="count-pill total">{queue.length} Total</span>
+              {/* Drop Zone (strictly accepts selected fromFormat) */}
+              <section className="dropzone-section" aria-label="File upload area">
+                <DropZone
+                  fromFormat={fromFormat}
+                  toFormat={toFormat}
+                  onFilesSelected={handleFilesSelected}
+                  onError={(msg) => showToast(msg, 'error')}
+                />
+              </section>
+
+              {/* Queue Management Bar */}
+              {queue.length > 0 && (
+                <section className="queue-section fade-in" aria-label="Conversion queue">
+                  <div className="queue-header-bar glass-panel">
+                    <div className="queue-summary">
+                      <h2 className="queue-title">Conversion Queue</h2>
+                      <div className="queue-counts">
+                        <span className="count-pill total">{queue.length} Total</span>
+                        {pendingCount > 0 && (
+                          <span className="count-pill pending">{pendingCount} Pending</span>
+                        )}
+                        {completedCount > 0 && (
+                          <span className="count-pill completed">{completedCount} Converted</span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="queue-controls">
                       {pendingCount > 0 && (
-                        <span className="count-pill pending">{pendingCount} Pending</span>
+                        <button
+                          id="convert-all-btn"
+                          className="btn-primary"
+                          onClick={handleConvertAll}
+                        >
+                          <Play size={16} aria-hidden="true" />
+                          <span>Convert All ({pendingCount})</span>
+                        </button>
                       )}
+
                       {completedCount > 0 && (
-                        <span className="count-pill completed">{completedCount} Converted</span>
+                        <button
+                          id="download-all-btn"
+                          className="btn-secondary text-cyan"
+                          onClick={handleDownloadAll}
+                        >
+                          <DownloadCloud size={16} aria-hidden="true" />
+                          <span>Download All ({completedCount})</span>
+                        </button>
                       )}
+
+                      <button
+                        id="clear-queue-btn"
+                        className="btn-secondary text-muted"
+                        onClick={handleClearQueue}
+                        title="Clear Queue"
+                      >
+                        <Trash2 size={16} aria-hidden="true" />
+                        <span>Clear</span>
+                      </button>
                     </div>
                   </div>
 
-                  <div className="queue-controls">
-                    {pendingCount > 0 && (
-                      <button
-                        id="convert-all-btn"
-                        className="btn-primary"
-                        onClick={handleConvertAll}
-                      >
-                        <Play size={16} aria-hidden="true" />
-                        <span>Convert All ({pendingCount})</span>
-                      </button>
-                    )}
-
-                    {completedCount > 0 && (
-                      <button
-                        id="download-all-btn"
-                        className="btn-secondary text-cyan"
-                        onClick={handleDownloadAll}
-                      >
-                        <DownloadCloud size={16} aria-hidden="true" />
-                        <span>Download All ({completedCount})</span>
-                      </button>
-                    )}
-
-                    <button
-                      id="clear-queue-btn"
-                      className="btn-secondary text-muted"
-                      onClick={handleClearQueue}
-                      title="Clear Queue"
-                    >
-                      <Trash2 size={16} aria-hidden="true" />
-                      <span>Clear</span>
-                    </button>
+                  {/* Queue items list */}
+                  <div className="queue-grid">
+                    {queue.map(item => (
+                      <FileCard
+                        key={item.id}
+                        item={item}
+                        onConvert={handleConvertItem}
+                        onDownload={handleDownload}
+                        onCompare={(itm) => setInspectItem(itm)}
+                        onRemove={handleRemoveItem}
+                      />
+                    ))}
                   </div>
-                </div>
+                </section>
+              )}
 
-                {/* Queue items list */}
-                <div className="queue-grid">
-                  {queue.map(item => (
-                    <FileCard
-                      key={item.id}
-                      item={item}
-                      onConvert={handleConvertItem}
-                      onDownload={handleDownload}
-                      onCompare={(itm) => setInspectItem(itm)}
-                      onRemove={handleRemoveItem}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
+              {/* Features & Architecture Showcase */}
+              <FeaturesSection />
+            </div>
+          )}
 
-            {/* Features & Architecture Showcase */}
-            <FeaturesSection />
-          </div>
-        )}
+          {/* VIEW 2: FILE & PDF CONVERTER (iLovePDF Inspired Suite) */}
+          {activeMode === 'file' && (
+            <div className="file-converter-view fade-in">
+              <PdfToolsGrid onSelectTool={(tool) => setSelectedPdfTool(tool)} />
+            </div>
+          )}
 
-        {/* VIEW 2: FILE & PDF CONVERTER (iLovePDF Inspired Suite) */}
-        {activeMode === 'file' && (
-          <div className="file-converter-view fade-in">
-            <PdfToolsGrid onSelectTool={(tool) => setSelectedPdfTool(tool)} />
-          </div>
-        )}
+          {/* Ad Container across ALL screens / views */}
+          <section className="in-page-ad-section" aria-label="Advertisement Banner">
+            <AdContainer slotType="banner" />
+          </section>
 
-        {/* Contact Form Section (Direct Support & Feedback) */}
-        <ContactSection onNotify={showToast} />
-      </main>
+          {/* Contact Form Section (Direct Support & Feedback) */}
+          <ContactSection onNotify={showToast} />
+        </main>
+
+        {/* Right Side Ad Rail (160x600 Skyscraper - Desktop Widescreen) */}
+        <aside className="ad-side-rail ad-side-right" aria-label="Sponsored Ad Right">
+          <AdContainer slotType="sidebar" width={160} height={600} />
+        </aside>
+      </div>
 
       {/* PDF Tool Runner Modal */}
       {selectedPdfTool && (
