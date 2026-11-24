@@ -10,7 +10,8 @@ export default function Navbar({
   backendStatus, 
   historyCount, 
   onOpenHistory, 
-  onOpenSettings 
+  onOpenSettings,
+  onNavigate
 }) {
   const isHealthy = backendStatus.healthy;
 
@@ -19,15 +20,18 @@ export default function Navbar({
       <div className="navbar-content">
         {/* Brand */}
         <a
-          href={SITE_URL || '/'}
+          href="/"
           className="brand-group"
           title={`Zyvokio — ${SITE_URL || 'https://zyvokio.vercel.app'}`}
           onClick={(e) => {
-            if (onSelectMode && activeMode !== 'img') {
-              e.preventDefault();
-              onSelectMode('img');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+            e.preventDefault();
+            if (onNavigate) {
+              onNavigate('/');
             }
+            if (onSelectMode) {
+              onSelectMode('img');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
           <div className="brand-logo-glow">

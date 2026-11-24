@@ -25,6 +25,8 @@ import PdfToolsGrid from './components/PdfToolsGrid';
 import PdfToolModal from './components/PdfToolModal';
 import NotFound from './components/NotFound';
 import AdContainer from './components/AdContainer';
+import ToolPage from './components/ToolPage';
+import { getSeoToolBySlug, SEO_TOOLS } from './data/seoPagesData';
 import './App.css';
 
 import { SITE_URL, SITE_NAME } from './utils/seoConfig';
@@ -102,6 +104,30 @@ function getSchemaForMode(activeMode) {
 }
 
 export default function App() {
+  // URL Routing State for Google SEO Tool Pages
+  const [currentPath, setCurrentPath] = useState(
+    typeof window !== 'undefined' ? window.location.pathname : '/'
+  );
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigate = (path) => {
+    if (typeof window !== 'undefined') {
+      window.history.pushState(null, '', path);
+      setCurrentPath(path);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const currentSlug = currentPath.replace(/^\/+|\/+$/g, '').toLowerCase();
+  const activeSeoTool = getSeoToolBySlug(currentSlug);
+
   // Converter Mode: 'img' (Image Converter) | 'file' (File & PDF Converter)
   const [activeMode, setActiveMode] = useState('img');
   const [selectedPdfTool, setSelectedPdfTool] = useState(null);
@@ -393,12 +419,14 @@ export default function App() {
   return (
     <div className="app-layout">
       {/* Per-page SEO (React 19 native <title>, <meta>, <link>, JSON-LD) */}
-      <SEO
-        title={seoTitle}
-        description={seoDescription}
-        path="/"
-        schema={seoSchemas}
-      />
+      {!activeSeoTool && (
+        <SEO
+          title={seoTitle}
+          description={seoDescription}
+          path="/"
+          schema={seoSchemas}
+        />
+      )}
 
       {/* Top Navbar */}
       <Navbar
@@ -410,6 +438,7 @@ export default function App() {
         historyCount={history.length}
         onOpenHistory={() => setIsHistoryOpen(true)}
         onOpenSettings={() => setIsSettingsOpen(true)}
+        onNavigate={navigate}
       />
 
       {/* Main Content Layout with Left & Right Desktop Ad Rails */}
@@ -420,126 +449,187 @@ export default function App() {
         </aside>
 
         <main className="main-content" role="main">
-          {/* Prominent Dual Mode Switcher (Image Converter vs File Converter) */}
-          <ModeSwitcher activeMode={activeMode} onSelectMode={setActiveMode} />
+          {activeSeoTool ? (
+            <ToolPage
+              toolData={activeSeoTool}
+              queue={queue}
+              onFilesSelected={handleFilesSelected}
+              onConvertItem={handleConvertItem}
+              onDownload={handleDownload}
+              onCompare={(itm) => setInspectItem(itm)}
+              onRemoveItem={handleRemoveItem}
+              handleConvertAll={handleConvertAll}
+              handleDownloadAll={handleDownloadAll}
+              handleClearQueue={handleClearQueue}
+              pendingCount={pendingCount}
+              completedCount={completedCount}
+              onOpenPdfTool={(t) => setSelectedPdfTool(t)}
+              onNavigate={navigate}
+              onNotify={showToast}
+            />
+          ) : currentSlug !== '' ? (
+            <NotFound onGoHome={() => navigate('/')} />
+          ) : (
+            <>
+              {/* Popular Tools Quick Links Bar for Google SEO & Fast Access */}
+              <div className="popular-seo-tools-bar fade-in" aria-label="Popular Online Tools">
+                <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Trending Tools:</span>
+                <button type="button" className="popular-tool-chip" onClick={() => navigate('/jpg-to-png')}>
+                  <span>JPG to PNG</span>
+                  <span className="chip-tag">Lossless</span>
+                </button>
+                <button type="button" className="popular-tool-chip" onClick={() => navigate('/image-compressor')}>
+                  <span>Image Compressor</span>
+                  <span className="chip-tag">Save 80%</span>
+                </button>
+                <button type="button" className="popular-tool-chip" onClick={() => navigate('/image-resizer')}>
+                  <span>Image Resizer</span>
+                  <span className="chip-tag">Pixels</span>
+                </button>
+                <button type="button" className="popular-tool-chip" onClick={() => navigate('/pdf-to-jpg')}>
+                  <span>PDF to JPG</span>
+                  <span className="chip-tag">300 DPI</span>
+                </button>
+                <button type="button" className="popular-tool-chip" onClick={() => navigate('/merge-pdf')}>
+                  <span>Merge PDF</span>
+                </button>
+                <button type="button" className="popular-tool-chip" onClick={() => navigate('/compress-pdf')}>
+                  <span>Compress PDF</span>
+                </button>
+                <button type="button" className="popular-tool-chip" onClick={() => navigate('/png-to-webp')}>
+                  <span>PNG to WebP</span>
+                </button>
+              </div>
 
-          {/* VIEW 1: IMAGE CONVERTER */}
-          {activeMode === 'img' && (
-            <div className="img-converter-view fade-in">
-              {/* Hero Section */}
-              <section className="hero-section" aria-labelledby="hero-heading">
-                <div className="hero-badge-wrap">
-                  <span className="badge badge-primary">
-                    <Sparkles size={13} aria-hidden="true" /> Lossless In-Memory Multi-Format Engine
-                  </span>
-                </div>
-                <h1 id="hero-heading" className="hero-headline">
-                  Convert <span className="gradient-text">{fromFormat.toUpperCase()} to {toFormat.toUpperCase()}</span> with Studio Fidelity
-                </h1>
-                <p className="hero-lead">
-                  Lightning-fast image converter powered by Sharp and libvips. Runs completely in Node.js memory with zero database, storing conversion records securely in your browser LocalStorage.
-                </p>
-              </section>
+              {/* Prominent Dual Mode Switcher (Image Converter vs File Converter) */}
+              <ModeSwitcher activeMode={activeMode} onSelectMode={setActiveMode} />
 
-              {/* 2 Dropdowns Format Selector with Presets */}
-              <section className="format-selector-section" aria-label="Format selection">
-                <FormatSelector
-                  fromFormat={fromFormat}
-                  toFormat={toFormat}
-                  onChangeFrom={setFromFormat}
-                  onChangeTo={setToFormat}
-                  onSelectPreset={handleSelectPreset}
-                />
-              </section>
+              {/* VIEW 1: IMAGE CONVERTER */}
+              {activeMode === 'img' && (
+                <div className="img-converter-view fade-in">
+                  {/* Hero Section */}
+                  <section className="hero-section" aria-labelledby="hero-heading">
+                    <div className="hero-badge-wrap">
+                      <span className="badge badge-primary">
+                        <Sparkles size={13} aria-hidden="true" /> Lossless In-Memory Multi-Format Engine
+                      </span>
+                    </div>
+                    <h1 id="hero-heading" className="hero-headline">
+                      Convert <span className="gradient-text">{fromFormat.toUpperCase()} to {toFormat.toUpperCase()}</span> with Studio Fidelity
+                    </h1>
+                    <p className="hero-lead">
+                      Lightning-fast image converter powered by Sharp and libvips. Runs completely in Node.js memory with zero database, storing conversion records securely in your browser LocalStorage.
+                    </p>
+                  </section>
 
-              {/* Drop Zone (strictly accepts selected fromFormat) */}
-              <section className="dropzone-section" aria-label="File upload area">
-                <DropZone
-                  fromFormat={fromFormat}
-                  toFormat={toFormat}
-                  onFilesSelected={handleFilesSelected}
-                  onError={(msg) => showToast(msg, 'error')}
-                />
-              </section>
+                  {/* 2 Dropdowns Format Selector with Presets */}
+                  <section className="format-selector-section" aria-label="Format selection">
+                    <FormatSelector
+                      fromFormat={fromFormat}
+                      toFormat={toFormat}
+                      onChangeFrom={setFromFormat}
+                      onChangeTo={setToFormat}
+                      onSelectPreset={handleSelectPreset}
+                    />
+                  </section>
 
-              {/* Queue Management Bar */}
-              {queue.length > 0 && (
-                <section className="queue-section fade-in" aria-label="Conversion queue">
-                  <div className="queue-header-bar glass-panel">
-                    <div className="queue-summary">
-                      <h2 className="queue-title">Conversion Queue</h2>
-                      <div className="queue-counts">
-                        <span className="count-pill total">{queue.length} Total</span>
-                        {pendingCount > 0 && (
-                          <span className="count-pill pending">{pendingCount} Pending</span>
-                        )}
-                        {completedCount > 0 && (
-                          <span className="count-pill completed">{completedCount} Converted</span>
-                        )}
+                  {/* Drop Zone (strictly accepts selected fromFormat) */}
+                  <section className="dropzone-section" aria-label="File upload area">
+                    <DropZone
+                      fromFormat={fromFormat}
+                      toFormat={toFormat}
+                      onFilesSelected={handleFilesSelected}
+                      onError={(msg) => showToast(msg, 'error')}
+                    />
+                  </section>
+
+                  {/* Queue Management Bar */}
+                  {queue.length > 0 && (
+                    <section className="queue-section fade-in" aria-label="Conversion queue">
+                      <div className="queue-header-bar glass-panel">
+                        <div className="queue-summary">
+                          <h2 className="queue-title">Conversion Queue</h2>
+                          <div className="queue-counts">
+                            <span className="count-pill total">{queue.length} Total</span>
+                            {pendingCount > 0 && (
+                              <span className="count-pill pending">{pendingCount} Pending</span>
+                            )}
+                            {completedCount > 0 && (
+                              <span className="count-pill completed">{completedCount} Converted</span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="queue-controls">
+                          {pendingCount > 0 && (
+                            <button
+                              id="convert-all-btn"
+                              className="btn-primary"
+                              onClick={handleConvertAll}
+                            >
+                              <Play size={16} aria-hidden="true" />
+                              <span>Convert All ({pendingCount})</span>
+                            </button>
+                          )}
+
+                          {completedCount > 0 && (
+                            <button
+                              id="download-all-btn"
+                              className="btn-secondary text-cyan"
+                              onClick={handleDownloadAll}
+                            >
+                              <DownloadCloud size={16} aria-hidden="true" />
+                              <span>Download All ({completedCount})</span>
+                            </button>
+                          )}
+
+                          <button
+                            id="clear-queue-btn"
+                            className="btn-secondary text-muted"
+                            onClick={handleClearQueue}
+                            title="Clear Queue"
+                          >
+                            <Trash2 size={16} aria-hidden="true" />
+                            <span>Clear</span>
+                          </button>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="queue-controls">
-                      {pendingCount > 0 && (
-                        <button
-                          id="convert-all-btn"
-                          className="btn-primary"
-                          onClick={handleConvertAll}
-                        >
-                          <Play size={16} aria-hidden="true" />
-                          <span>Convert All ({pendingCount})</span>
-                        </button>
-                      )}
+                      {/* Queue items list */}
+                      <div className="queue-grid">
+                        {queue.map(item => (
+                          <FileCard
+                            key={item.id}
+                            item={item}
+                            onConvert={handleConvertItem}
+                            onDownload={handleDownload}
+                            onCompare={(itm) => setInspectItem(itm)}
+                            onRemove={handleRemoveItem}
+                          />
+                        ))}
+                      </div>
+                    </section>
+                  )}
 
-                      {completedCount > 0 && (
-                        <button
-                          id="download-all-btn"
-                          className="btn-secondary text-cyan"
-                          onClick={handleDownloadAll}
-                        >
-                          <DownloadCloud size={16} aria-hidden="true" />
-                          <span>Download All ({completedCount})</span>
-                        </button>
-                      )}
-
-                      <button
-                        id="clear-queue-btn"
-                        className="btn-secondary text-muted"
-                        onClick={handleClearQueue}
-                        title="Clear Queue"
-                      >
-                        <Trash2 size={16} aria-hidden="true" />
-                        <span>Clear</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Queue items list */}
-                  <div className="queue-grid">
-                    {queue.map(item => (
-                      <FileCard
-                        key={item.id}
-                        item={item}
-                        onConvert={handleConvertItem}
-                        onDownload={handleDownload}
-                        onCompare={(itm) => setInspectItem(itm)}
-                        onRemove={handleRemoveItem}
-                      />
-                    ))}
-                  </div>
-                </section>
+                  {/* Features & Architecture Showcase */}
+                  <FeaturesSection />
+                </div>
               )}
 
-              {/* Features & Architecture Showcase */}
-              <FeaturesSection />
-            </div>
-          )}
-
-          {/* VIEW 2: FILE & PDF CONVERTER (iLovePDF Inspired Suite) */}
-          {activeMode === 'file' && (
-            <div className="file-converter-view fade-in">
-              <PdfToolsGrid onSelectTool={(tool) => setSelectedPdfTool(tool)} />
-            </div>
+              {/* VIEW 2: FILE & PDF CONVERTER (iLovePDF Inspired Suite) */}
+              {activeMode === 'file' && (
+                <div className="file-converter-view fade-in">
+                  <PdfToolsGrid onSelectTool={(tool) => {
+                    const seoMatch = getSeoToolBySlug(tool.id);
+                    if (seoMatch) {
+                      navigate(`/${tool.id}`);
+                    } else {
+                      setSelectedPdfTool(tool);
+                    }
+                  }} />
+                </div>
+              )}
+            </>
           )}
 
           {/* Ad Container across ALL screens / views */}

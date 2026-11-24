@@ -4509,3 +4509,97 @@
   font-family: var(--font-mono);
 }
 
+/* ========================================================
+   DEDICATED GOOGLE SEO TOOL PAGES
+   ======================================================== */
+.seo-tool-page-view {
+  width: 100%;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.breadcrumbs-wrap {
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.breadcrumbs-wrap a,
+.breadcrumbs-wrap button {
+  transition: color var(--transition-fast);
+}
+
+.breadcrumbs-wrap button:hover {
+  color: var(--zyvokio-aqua) !important;
+  text-decoration: underline;
+}
+
+.step-card {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.step-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(18, 207, 229, 0.4);
+}
+
+.related-tool-card {
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.related-tool-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--zyvokio-aqua) !important;
+  box-shadow: 0 4px 14px rgba(8, 127, 175, 0.12);
+}
+
+.faq-accordion-item button:hover {
+  background: rgba(8, 127, 175, 0.02) !important;
+}
+
+/* Popular SEO Tools Chip Bar on Homepage */
+.popular-seo-tools-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 6px 0 16px 0;
+}
+
+.popular-tool-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--zyvokio-text-black);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.popular-tool-chip:hover {
+  border-color: var(--zyvokio-deep-teal);
+  color: var(--zyvokio-deep-teal);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(8, 127, 175, 0.12);
+  background: rgba(18, 207, 229, 0.04);
+}
+
+.popular-tool-chip .chip-tag {
+  font-size: 0.7rem;
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  background: rgba(18, 207, 229, 0.15);
+  color: var(--zyvokio-deep-teal);
+  font-weight: 800;
+}
+
+
