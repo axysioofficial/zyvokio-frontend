@@ -51,7 +51,7 @@ export default function AdContainer({
   // Determine active unit based on slotType and screen size
   const activeUnit =
     slotType === 'sidebar'
-      ? AD_UNITS.sidebar
+      ? (isMobile ? AD_UNITS.rectangle : AD_UNITS.sidebar)
       : isMobile
       ? AD_UNITS.rectangle
       : AD_UNITS.leaderboard;

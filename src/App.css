@@ -230,6 +230,7 @@
 .main-content {
   flex: 1;
   max-width: 1200px;
+  min-width: 0;
   width: 100%;
   margin: 0 auto;
   padding: clamp(24px, 4vw, 40px) 20px 60px;
@@ -4320,35 +4321,86 @@
   width: 100%;
   max-width: 1680px;
   margin: 0 auto;
+  padding: 0 12px;
 }
 
-/* Desktop Side Ad Rails (Left & Right 160x600 Skyscrapers) */
+/* Side Ad Rails (Left & Right 160x600 Skyscrapers) — Enabled across all screens */
 .ad-side-rail {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  width: 170px;
+  min-width: 170px;
+  padding: 24px 0;
+  position: sticky;
+  top: 86px;
+  height: fit-content;
+  align-self: flex-start;
+  z-index: 20;
+  flex-shrink: 0;
 }
 
-@media (min-width: 1540px) {
+.ad-side-left {
+  margin-right: 14px;
+  margin-left: 8px;
+}
+
+.ad-side-right {
+  margin-left: 14px;
+  margin-right: 8px;
+}
+
+/* Medium & Tablet Screens (768px - 1024px): Compact spacing so content fits gracefully */
+@media (max-width: 1024px) {
   .ad-side-rail {
-    display: flex;
-    flex-direction: column;
-    width: 170px;
-    min-width: 170px;
-    padding: 24px 0;
-    position: sticky;
-    top: 86px;
-    height: fit-content;
-    align-self: flex-start;
-    z-index: 20;
+    width: 164px;
+    min-width: 164px;
+    padding: 16px 0;
   }
 
   .ad-side-left {
-    margin-right: 16px;
-    margin-left: 12px;
+    margin-right: 8px;
+    margin-left: 4px;
   }
 
   .ad-side-right {
-    margin-left: 16px;
-    margin-right: 12px;
+    margin-left: 8px;
+    margin-right: 4px;
+  }
+
+  .main-content {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+/* Mobile Screens (< 768px): Display top & bottom so content is never squished */
+@media (max-width: 767px) {
+  .app-main-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  .ad-side-rail {
+    width: 100%;
+    min-width: unset;
+    max-width: 320px;
+    position: static;
+    padding: 8px 0;
+  }
+
+  .ad-side-left {
+    margin: 10px auto 4px auto;
+  }
+
+  .ad-side-right {
+    margin: 4px auto 14px auto;
+  }
+
+  .adsterra-sidebar {
+    width: 100%;
+    max-width: 310px;
+    min-height: 258px;
   }
 }
 
